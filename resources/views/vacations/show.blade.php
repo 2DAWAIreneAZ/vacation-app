@@ -25,22 +25,37 @@
                     <div class="grid md:grid-cols-2 gap-8">
 
                         {{-- Images --}}
-                        <div>
-                            @php $firstImage = $vacation->images->first(); @endphp
-                            		<img src="{{ $vacation->main_image }}"
-                                 alt="{{ $vacation->title }}"
-                                 class="w-full rounded-lg shadow-lg mb-3">
 
-                            @if($vacation->images->count() > 1)
-                                <div class="grid grid-cols-4 gap-2">
-                                    @foreach($vacation->images->skip(1) as $image)
-                                        <img src="{{ asset('storage/' . $image->route) }}"
-                                             alt="{{ $vacation->title }}"
-                                             class="w-full h-16 object-cover rounded">
-                                    @endforeach
-                                </div>
-                            @endif
-                        </div>
+												@php
+														$firstImage = $vacation->images->first();
+														$defaultImage = asset('images/noimage.jpg');
+
+														$initialImage = $firstImage
+																? asset('storage/' . $firstImage->route)
+																: $defaultImage;
+												@endphp
+
+												<div x-data="{ selected: '{{ $initialImage }}' }">
+
+														{{-- Imagen principal --}}
+														<img :src="selected"
+																class="w-full rounded-lg shadow-lg mb-3 transition object-cover">
+
+														{{-- Miniaturas --}}
+														@if($vacation->images->count() > 1)
+																<div class="grid grid-cols-4 gap-2">
+																		@foreach($vacation->images as $image)
+																				@php $url = asset('storage/' . $image->route); @endphp
+
+																				<img src="{{ $url }}"
+																						@click="selected = '{{ $url }}'"
+																						class="w-full h-16 object-cover rounded border cursor-pointer
+																										hover:opacity-75 hover:scale-105 transition">
+																		@endforeach
+																</div>
+														@endif
+
+												</div>
 
                         {{-- Info --}}
                         <div>

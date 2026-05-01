@@ -215,14 +215,15 @@ class VacationController extends Controller
 
             // Subir nuevas imágenes
             if ($request->hasFile('images')) {
-                foreach ($request->file('images') as $file) {
-                    $path = $file->store('vacations', 'public');
-                    Image::create([
-                        'id_vacation' => $vacation->id,
-                        'route'       => $path,
-                    ]);
-                }
-            }
+								foreach ($request->file('images') as $file) {
+										$path = $file->store('vacations', 'public');
+
+										Image::create([
+												'id_vacation' => $vacation->id,
+												'route'       => $path,
+										]);
+								}
+						}
 
             return redirect()->route('vacations.show', $vacation)
                 ->with('success', 'Paquete actualizado correctamente.');

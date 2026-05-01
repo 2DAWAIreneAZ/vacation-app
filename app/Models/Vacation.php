@@ -36,10 +36,8 @@ class Vacation extends Model {
 		public function getMainImageAttribute(): string {
 				$image = $this->images->first();
 
-				if ($image) {
-						return asset('storage/' . $image->route);
-				}
-
-				return asset('images/noimage.jpg');
+				return $image
+						? asset('storage/' . $image->route)
+						: asset('images/noimage.jpg');
 		}
 }

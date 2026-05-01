@@ -9,14 +9,10 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ImageController;
 use Illuminate\Support\Facades\Route;
 
-// ──────────────────────────────────────────────
 // Pública
-// ──────────────────────────────────────────────
 Route::get('/', [VacationController::class, 'welcome'])->name('welcome');
 
-// ──────────────────────────────────────────────
 // Autenticadas
-// ──────────────────────────────────────────────
 Route::middleware('auth')->group(function () {
 
     Route::get('/dashboard', function () {
@@ -46,6 +42,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/vacations/{vacation}/comments', [CommentController::class, 'store'])->name('comments.store');
     Route::put('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+
+		// Imágenes
+		Route::delete('/images/{image}', [ImageController::class, 'destroy'])->name('images.destroy');
 });
 
 // Breeze registra aquí: login, register, logout, forgot-password, reset-password
